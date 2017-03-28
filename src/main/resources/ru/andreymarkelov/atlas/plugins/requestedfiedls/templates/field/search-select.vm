@@ -1,4 +1,5 @@
 ##disable_html_escaping() TODO REENABLE
+$webResourceManager.requireResourcesForContext("requestedfields")
 $!{auiparams.put("controlHeaderClass", "aui-field-text")}
 #searcherEditHeader (${customField.id} ${customField.name})
     #if($value.size() > 0)
