@@ -1,5 +1,4 @@
 ##disable_html_escaping() TODO REENABLE
-$webResourceManager.requireResourcesForContext("requestedfields")
 #searcherHeader ($customField)
 #if ($valueObject)
     $cfValueEncoder.encodeForHtml($!valueObject.toString())

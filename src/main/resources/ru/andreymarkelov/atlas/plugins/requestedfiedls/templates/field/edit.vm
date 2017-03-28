@@ -1,32 +1,28 @@
-$webResourceManager.requireResourcesForContext("requestedfields")
 #controlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters.noHeader)
 #if ($displayParameters.defaultScreen)
-    <input class="text" id="$customField.id" maxlength="254" name="$customField.id"${style} type="text" value="$textutils.htmlEncode($!value)"/>
+<input class="text" id="$customField.id" maxlength="254" name="$customField.id"${style} type="text"
+       value="$textutils.htmlEncode($!value)"/>
 #else
     #if($notconfigured)
-        <div class="formErrors">$i18n.getText("requestedfields.settings.error")</div>
+    <div class="formErrors">$i18n.getText("requestedfields.settings.error")</div>
     #else
         #set($data = $runner.getData())
         #set($error = $data.getError())
         #set($vals = $data.getVals())
         #if($error)
-            <div class="formErrors">$textutils.htmlEncode($!error)</div>
+        <div class="formErrors">$textutils.htmlEncode($!error)</div>
         #else
-            <select class="select" style="color: palevioletred;" name="$customField.id " id="$customField.id">
-                #foreach($val in $vals)<option #if($value && $value == $val)selected="selected"#end value="$val">$val</option>#end
-            </select>
-        <script type="javascript">
-            AJS.toInit(function () {
-                var myText = 'Text from Edit.vm';
-                console.log(myText);
-            })
+        <select class="select" name="$customField.id" id="$customField.id">
+            #foreach($val in $vals)
+                <option #if($value && $value == $val)selected="selected"#end value="$val">$val</option>#end
+        </select>
+        <script type="text/javascript">
+            var customId = "${customField.id}";
+            (function ($) {
+                $(document).ready(function () {
+                    AJS.$('#' + customId + "option[value='-1']").remove(); //Removes the default value "None"
 
-            (function($) {
-                $(document).ready(function() {
-                    AJS.$("#customfield_10000 option[value='-1']").remove(); //Removes the default value "None"
                     function convertMulti(id) {
-                        var myVar = 234;
-                        console.log(myVar);
                         if (AJS.$('#' + id + "-textarea").length == 0) {
                             new AJS.MultiSelect({
                                 element: $("#" + id),
@@ -37,12 +33,12 @@ $webResourceManager.requireResourcesForContext("requestedfields")
                     }
 
                     AJS.toInit(function () {
-                        convertMulti("customfield_10000");
+                        convertMulti(customId);
                     })
 
                     JIRA.bind(JIRA.Events.NEW_CONTENT_ADDED, function (e, context) {
-                        AJS.$("#customfield_<10000> option[value='-1']").remove();
-                        convertMulti("customfield_<10000>");
+                        AJS.$('#' + customId + "option[value='-1']").remove();
+                        convertMulti("customfield_" + customId);
                     });
                 });
             })(AJS.$ || jQuery);
