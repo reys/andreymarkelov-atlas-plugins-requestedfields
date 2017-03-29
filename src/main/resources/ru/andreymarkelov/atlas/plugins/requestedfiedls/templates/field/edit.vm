@@ -24,10 +24,10 @@
 
                     function convertMulti(id) {
                         if (AJS.$('#' + id + "-textarea").length == 0) {
-                            new AJS.MultiSelect({
+                            new AJS.SingleSelect({
                                 element: $("#" + id),
                                 itemAttrDisplayed: "label",
-                                errorMessage: AJS.params.multiselectComponentsError
+                                errorMessage: AJS.params.singleselectComponentsError
                             });
                         }
                     }
