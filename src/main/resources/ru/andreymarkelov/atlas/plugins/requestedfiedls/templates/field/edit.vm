@@ -1,3 +1,5 @@
+##$webResourceManager.requireResource("com.atlassian.auiplugin:aui-select2")
+$webResourceManager.requireResourcesForContext("requestedfields")
 #controlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters.noHeader)
 #if ($displayParameters.defaultScreen)
 <input class="text" id="$customField.id" maxlength="254" name="$customField.id"${style} type="text"
@@ -20,25 +22,22 @@
             var customId = "${customField.id}";
             (function ($) {
                 $(document).ready(function () {
+
                     AJS.$('#' + customId + "option[value='-1']").remove(); //Removes the default value "None"
 
-                    function convertMulti(id) {
+                    function convertSingleSelect(id) {
                         if (AJS.$('#' + id + "-textarea").length == 0) {
-                            new AJS.SingleSelect({
-                                element: $("#" + id),
-                                itemAttrDisplayed: "label",
-                                errorMessage: AJS.params.singleselectComponentsError
-                            });
+                            new AJS.$("#" + id).auiSelect2();
                         }
                     }
 
                     AJS.toInit(function () {
-                        convertMulti(customId);
+                        convertSingleSelect(customId);
                     })
 
                     JIRA.bind(JIRA.Events.NEW_CONTENT_ADDED, function (e, context) {
                         AJS.$('#' + customId + "option[value='-1']").remove();
-                        convertMulti("customfield_" + customId);
+                        convertSingleSelect("customfield_" + customId);
                     });
                 });
             })(AJS.$ || jQuery);
